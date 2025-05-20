@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import CertificateCard from "../components/CertificateCard";
+import "../Wallet.css"; // Import the CSS file
 
 const Wallet = () => {
   const [certificates, setCertificates] = useState([]);
@@ -13,9 +14,9 @@ const Wallet = () => {
   }, []);
 
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4">My Certificates</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className="wallet-container">
+      <h2 className="wallet-title">My Certificates</h2>
+      <div className="wallet-grid">
         {certificates.map((cert) => (
           <CertificateCard key={cert._id} cert={cert} />
         ))}

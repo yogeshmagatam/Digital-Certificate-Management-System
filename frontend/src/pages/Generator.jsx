@@ -1,10 +1,11 @@
 // src/pages/Generator.jsx
 import React, { useState } from "react";
 import axios from "axios";
+import "../Generator.css"; // Import the CSS file
 
 function Generator() {
   const [file, setFile] = useState(null);
-  console.log("hiiii");
+
   const uploadFile = () => {
     const formData = new FormData();
     formData.append("file", file);
@@ -15,13 +16,18 @@ function Generator() {
   };
 
   return (
-    <div className="p-6">
-      <input
-        type="file"
-        accept=".csv"
-        onChange={(e) => setFile(e.target.files[0])}
-      />
-      <button onClick={uploadFile}>Generate Certificates</button>
+    <div className="generator-container">
+      <div className="generator-card">
+        <input
+          className="generator-input"
+          type="file"
+          accept=".csv"
+          onChange={(e) => setFile(e.target.files[0])}
+        />
+        <button className="generator-button" onClick={uploadFile}>
+          Generate Certificates
+        </button>
+      </div>
     </div>
   );
 }

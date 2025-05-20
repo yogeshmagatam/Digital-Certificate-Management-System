@@ -1,23 +1,24 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import "../Dashboard.css"; // Import the CSS file
 
 const Dashboard = () => {
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4">Admin Dashboard</h2>
-      <ul className="space-y-4">
+    <div className="dashboard-container">
+      <h2 className="dashboard-title">Admin Dashboard</h2>
+      <ul className="dashboard-list">
         <li>
-          <Link to="/generate" className="text-blue-600">
+          <Link to="/generate" className="dashboard-link">
             Generate Certificates
           </Link>
         </li>
         <li>
-          <Link to="/wallet" className="text-blue-600">
+          <Link to="/wallet" className="dashboard-link">
             My Wallet
           </Link>
         </li>
         <li>
-          <Link to="/logs" className="text-blue-600">
+          <Link to="/logs" className="dashboard-link">
             Audit Logs
           </Link>
         </li>
