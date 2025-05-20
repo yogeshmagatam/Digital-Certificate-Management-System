@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { QRCodeSVG } from "qrcode.react";
+import "../Verify.css"; // Import the CSS file
 
 const Verify = () => {
   const { certificateId } = useParams();
@@ -15,14 +16,18 @@ const Verify = () => {
   }, [certificateId]);
 
   return (
-    <div className="p-8">
+    <div className="verify-container">
       {data ? (
-        <div className="bg-white shadow-lg rounded-lg p-6">
-          <h2 className="text-xl font-bold mb-2">{data.studentName}</h2>
+        <div className="verify-card">
+          <h2 className="verify-title">{data.studentName}</h2>
           <p>Issued on: {data.issueDate}</p>
           <p>Course: {data.course}</p>
-          <p>Status: {data.valid ? "✅ Verified" : "❌ Invalid"}</p>
-          <QRCodeSVG value={window.location.href} className="mt-4" />
+          <p className={`verify-status${data.valid ? "" : " invalid"}`}>
+            {data.valid ? "✅ Verified" : "❌ Invalid"}
+          </p>
+          <div className="verify-qr">
+            <QRCodeSVG value={window.location.href} />
+          </div>
         </div>
       ) : (
         <p>Loading certificate...</p>

@@ -5,6 +5,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  animation: fadeInBg 1.2s;
+}
+
+@keyframes fadeInBg {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .wallet-title {
@@ -14,6 +24,18 @@
   margin-bottom: 2rem;
   letter-spacing: 1px;
   text-shadow: 0 2px 8px rgba(99, 102, 241, 0.08);
+  animation: slideDown 0.8s;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .wallet-grid {
@@ -22,6 +44,18 @@
   gap: 2rem;
   width: 100%;
   max-width: 900px;
+  animation: fadeInGrid 1s;
+}
+
+@keyframes fadeInGrid {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @media (min-width: 700px) {
@@ -34,4 +68,33 @@
   .wallet-grid {
     grid-template-columns: 1fr 1fr 1fr;
   }
+}
+
+/* Example animation for certificate cards inside the grid */
+.certificate-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.1);
+  padding: 1.5rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+  animation: popIn 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+@keyframes popIn {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  80% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.certificate-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 8px 32px rgba(99, 102, 241, 0.18);
 }

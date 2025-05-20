@@ -6,6 +6,16 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+  animation: fadeInBg 1.2s;
+}
+
+@keyframes fadeInBg {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .dashboard-title {
@@ -15,6 +25,18 @@
   margin-bottom: 2rem;
   letter-spacing: 1px;
   text-shadow: 0 2px 8px rgba(99, 102, 241, 0.08);
+  animation: slideDown 0.8s;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .dashboard-list {
@@ -23,6 +45,18 @@
   margin: 0;
   display: flex;
   gap: 2rem;
+  animation: fadeInList 1s;
+}
+
+@keyframes fadeInList {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .dashboard-list li {
@@ -40,10 +74,25 @@
   text-decoration: none;
   box-shadow: 0 4px 16px rgba(99, 102, 241, 0.12);
   transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  animation: popIn 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+@keyframes popIn {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  80% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .dashboard-link:hover {
   background: linear-gradient(90deg, #2563eb 0%, #6366f1 100%);
-  transform: translateY(-4px) scale(1.04);
+  transform: translateY(-4px) scale(1.08) rotate(-2deg);
   box-shadow: 0 8px 24px rgba(99, 102, 241, 0.18);
 }
