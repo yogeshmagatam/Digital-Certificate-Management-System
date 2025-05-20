@@ -1,0 +1,9 @@
+flask
+flask-cors
+pymongo
+python-dotenv
+web3
+ipfshttpclient
+flask-jwt-extended
+bcrypt
+fpdf
