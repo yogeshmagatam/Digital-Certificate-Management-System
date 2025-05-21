@@ -13,11 +13,6 @@ const Dashboard = () => {
           </Link>
         </li>
         <li>
-          <Link to="/wallet" className="dashboard-link">
-            My Wallet
-          </Link>
-        </li>
-        <li>
           <Link to="/logs" className="dashboard-link">
             Audit Logs
           </Link>

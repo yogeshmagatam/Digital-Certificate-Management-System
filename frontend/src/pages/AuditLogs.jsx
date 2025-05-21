@@ -4,10 +4,14 @@ import "../AuditLogs.css"; // Import the CSS file
 
 const AuditLogs = () => {
   const [logs, setLogs] = useState([]);
-
+  const token = localStorage.getItem("token");
   useEffect(() => {
     axios
-      .get("/api/audit-logs")
+      .get("http://localhost:5000/api/audit/audit-logs", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((res) => setLogs(res.data))
       .catch((err) => console.error(err));
   }, []);

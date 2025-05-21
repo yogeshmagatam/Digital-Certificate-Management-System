@@ -5,8 +5,11 @@ import bcrypt
 
 auth_bp = Blueprint('auth', __name__)
 
-@auth_bp.route('/login', methods=['POST'])
+@auth_bp.route('/login', methods=['POST', 'OPTIONS'])
 def login():
+    if request.method == 'OPTIONS':
+        # CORS preflight request
+        return '', 200
     data = request.get_json()
     user = Users.find_one({'email': data['email']})
     if user and bcrypt.checkpw(data['password'].encode('utf-8'), user['password']):
@@ -25,12 +28,13 @@ def login():
 def register():
     data = request.get_json()
     hashed = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt())
-    Users.insert_one({'email': data['email'], 'password': hashed})
+    Users.insert_one({'email': data['email'], 'password': hashed, 'role': data.get('role', 'student')})
     return jsonify({'msg': 'User registered'}), 201
 
 # Sample Payload:
 # POST /register
 # {
 #   "email": "admin@example.com",
-#   "password": "securepass123"
+#   "password": "securepass123",
+#   "role": "admin"
 # }

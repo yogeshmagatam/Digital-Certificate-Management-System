@@ -6,15 +6,17 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  animation: fadeInBg 1.2s;
+  animation: fadeIn 1s ease;
 }
 
-@keyframes fadeInBg {
+@keyframes fadeIn {
   from {
     opacity: 0;
+    transform: translateY(30px);
   }
   to {
     opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -61,6 +63,11 @@
 
 .dashboard-list li {
   margin: 0;
+  transition: transform 0.3s;
+}
+
+.dashboard-list li:hover {
+  transform: scale(1.05);
 }
 
 .dashboard-link {
@@ -95,4 +102,42 @@
   background: linear-gradient(90deg, #2563eb 0%, #6366f1 100%);
   transform: translateY(-4px) scale(1.08) rotate(-2deg);
   box-shadow: 0 8px 24px rgba(99, 102, 241, 0.18);
+}
+
+.dashboard-logout {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  margin-bottom: 0; /* Remove margin-bottom since it's now positioned absolutely */
+  padding: 0.8rem 2.2rem;
+  background: linear-gradient(90deg, #f87171 0%, #ef4444 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.12);
+  transition: background 0.2s, transform 0.18s, box-shadow 0.2s;
+  animation: popInLogout 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+@keyframes popInLogout {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  80% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.dashboard-logout:hover {
+  background: linear-gradient(90deg, #ef4444 0%, #f87171 100%);
+  transform: translateY(-3px) scale(1.07) rotate(1.5deg);
+  box-shadow: 0 6px 18px rgba(239, 68, 68, 0.18);
 }

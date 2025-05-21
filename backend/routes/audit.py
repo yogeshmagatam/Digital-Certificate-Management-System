@@ -8,5 +8,7 @@ audit_bp = Blueprint('audit', __name__)
 @jwt_required()
 def audit_logs():
     logs = list(AuditLogs.find().sort('timestamp', -1))
-    for l in logs: l['id'] = str(l['_id'])
+    for l in logs:
+        l['id'] = str(l['_id'])
+        del l['_id']  # Remove the ObjectId field to avoid serialization error
     return jsonify(logs), 200

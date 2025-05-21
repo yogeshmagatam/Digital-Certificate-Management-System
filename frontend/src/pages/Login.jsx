@@ -7,13 +7,31 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (email === "admin@example.com" && password === "password") {
+    try {
+      console.log("Logging in with:", { email, password });
+      const response = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Invalid credentials");
+      }
+
+      const data = await response.json();
+      if (data.token) {
+        localStorage.setItem("token", data.token); // Store the token
+      }
+      // You can store token or user info here if needed
       alert("Login successful!");
       navigate("/dashboard");
-    } else {
-      alert("Invalid credentials");
+    } catch (error) {
+      alert(error.message || "Login failed");
     }
   };
 

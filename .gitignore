@@ -2,5 +2,5 @@
 /backend/*.pyc
 /backend/**/__pycache__*/
 /backend/venv/
-
+/backend/tmp/
 /frontend/node_modules/
