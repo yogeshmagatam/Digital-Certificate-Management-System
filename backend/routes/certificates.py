@@ -1,3 +1,4 @@
+import datetime
 import os
 from flask import Blueprint, request, jsonify, send_file
 from flask_jwt_extended import jwt_required, get_jwt_identity
@@ -6,6 +7,9 @@ from utils.pdf_generator import generate_pdf
 from utils.ipfs_client import upload_file
 from utils.mock_blockchain  import anchor
 from bson import ObjectId
+import json
+import qrcode
+from io import BytesIO
 
 
 cert_bp = Blueprint('certificates', __name__)
@@ -19,7 +23,27 @@ def generate_certificates():
     pdf_dir = os.path.join(os.getcwd(), "tmp")
     os.makedirs(pdf_dir, exist_ok=True)
     pdf_path = os.path.join(pdf_dir, f"{cert_id}.pdf")
-    generate_pdf(data, pdf_path)
+    
+    # Prepare data for QR (remove or convert ObjectId)
+    qr_data = data.copy()
+    qr_data['id'] = str(cert_id)  # Add id as string for QR
+    # Do not include raw ObjectId
+    if '_id' in qr_data:
+        del qr_data['_id']
+
+    # Generate QR code with certificate data as JSON
+    qr_content = json.dumps(qr_data)
+    qr = qrcode.make(qr_content)
+    qr_bytes = BytesIO()
+    try:
+        qr.save(qr_bytes, format='PNG')
+        qr_bytes.seek(0)
+        qr_bytes.name = 'qrcode.png'
+        print("QR bytes length:", len(qr_bytes.getvalue()))
+    except Exception as e:
+        print("QR code generation error:", e)
+    
+    generate_pdf(data, pdf_path, qr_bytes)
     # ipfs_hash = upload_file(pdf_path)
     # tx_hash = anchor(ipfs_hash, os.getenv('ETH_ACCOUNT'), os.getenv('ETH_KEY'))
     # Certificates.update_one({'_id': cert_id}, {'$set': {'ipfs': ipfs_hash, 'tx': tx_hash}})
@@ -58,9 +82,22 @@ def generate_event_certificate():
     pdf_dir = os.path.join(os.getcwd(), "tmp")
     os.makedirs(pdf_dir, exist_ok=True)
     pdf_path = os.path.join(pdf_dir, f"{cert_id}.pdf")
-    generate_pdf(cert_data, pdf_path)
     # ipfs_hash = upload_file(pdf_path)
     # tx_hash = anchor(ipfs_hash, os.getenv('ETH_ACCOUNT'), os.getenv('ETH_KEY'))
     # Certificates.update_one({'_id': cert_id}, {'$set': {'ipfs': ipfs_hash, 'tx': tx_hash}})
-    AuditLogs.insert_one({'user': get_jwt_identity(), 'action': 'generate', 'details': str(cert_id)})
+
+    # Generate QR code with certificate data as JSON
+    qr_content = json.dumps(cert_data)
+    qr = qrcode.make(qr_content)
+    qr_bytes = BytesIO()
+    try:
+        qr.save(qr_bytes, format='PNG')
+        qr_bytes.seek(0)
+        qr_bytes.name = 'qrcode.png'
+        print("QR bytes length:", len(qr_bytes.getvalue()))
+    except Exception as e:
+        print("QR code generation error:", e)
+        
+    generate_pdf(cert_data, pdf_path, qr_bytes)
+    AuditLogs.insert_one({'name': f"{data.get('name')}_({data.get('name')})", 'event':  data.get('event'), 'details': str(cert_id), 'createdby_': get_jwt_identity(), 'createddate_': datetime.datetime.now()})
     return jsonify({'id': str(cert_id)}), 200

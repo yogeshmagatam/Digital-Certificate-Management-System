@@ -7,3 +7,5 @@ ipfshttpclient
 flask-jwt-extended
 bcrypt
 fpdf
+qrcode[pil]
+pillow
