@@ -5,6 +5,3 @@ Install Dependencies
 Run App
 **Frontend**: `npm start`
 **Backend**: `python app.start`
-
-
-Test
