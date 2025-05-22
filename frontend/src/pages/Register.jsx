@@ -7,7 +7,7 @@ const Register = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("student");
+  const role = "student"; // Always register as student
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -33,26 +33,6 @@ const Register = () => {
       <div className="login-card">
         <h2>Register</h2>
         <form onSubmit={handleRegister} className="login-form">
-          <div style={{ marginBottom: "10px" }}>
-            <label>
-              <input
-                type="radio"
-                value="student"
-                checked={role === "student"}
-                onChange={() => setRole("student")}
-              />
-              Student
-            </label>
-            <label style={{ marginLeft: "15px" }}>
-              <input
-                type="radio"
-                value="admin"
-                checked={role === "admin"}
-                onChange={() => setRole("admin")}
-              />
-              Admin
-            </label>
-          </div>
           <input
             type="email"
             placeholder="Email"

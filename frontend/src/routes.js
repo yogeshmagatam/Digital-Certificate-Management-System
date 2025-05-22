@@ -5,6 +5,7 @@ import Verify from "./pages/Verify";
 import Login from "./pages/Login";
 import AuditLogs from "./pages/AuditLogs";
 import GenerateCertificate from "./pages/CertificateGenerator";
+import StudentCertificates from "./pages/StudentCertificates";
 
 export default function AppRoutes() {
   return (
@@ -14,6 +15,7 @@ export default function AppRoutes() {
       <Route path="/generate" element={<GenerateCertificate />} />
       <Route path="/verify/:certificateId" element={<Verify />} />
       <Route path="/logs" element={<AuditLogs />} />
+      <Route path="/student-info" element={<StudentCertificates />} />
       <Route path="*" element={<Login />} />
     </Routes>
   );

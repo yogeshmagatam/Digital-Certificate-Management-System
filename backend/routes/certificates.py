@@ -2,7 +2,7 @@ import datetime
 import os
 from flask import Blueprint, request, jsonify, send_file
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from models import Certificates, AuditLogs
+from models import Certificates, AuditLogs, Users
 from utils.pdf_generator import generate_pdf
 from utils.ipfs_client import upload_file
 from utils.mock_blockchain  import anchor
@@ -70,12 +70,13 @@ def verify(cert_id):
 @jwt_required()
 def generate_event_certificate():
     data = request.get_json()
-    # Example expected data: {'name': 'John Doe', 'event': 'Hackathon 2025', 'date': '2025-05-21', 'email': 'john@example.com'}
+    student_id = get_jwt_identity()  # Get the logged-in user's ID
     cert_data = {
         'name': data.get('name'),
         'event': data.get('event'),
         'date': data.get('date'),
         'email': data.get('email'),
+        'student_id': student_id,  # <-- Add this line
         # Add other fields as needed
     }
     cert_id = Certificates.insert_one(cert_data).inserted_id
@@ -101,3 +102,34 @@ def generate_event_certificate():
     generate_pdf(cert_data, pdf_path, qr_bytes)
     AuditLogs.insert_one({'name': f"{data.get('name')}_({data.get('name')})", 'event':  data.get('event'), 'details': str(cert_id), 'createdby_': get_jwt_identity(), 'createddate_': datetime.datetime.now()})
     return jsonify({'id': str(cert_id)}), 200
+
+@cert_bp.route('/student/cert', methods=['GET'])
+@jwt_required()
+def get_student_certificates():
+    try:
+        user_id = get_jwt_identity()
+        print(user_id)
+        user = Users.find_one({'_id': ObjectId(user_id)})
+        print(user)
+        if not user:
+            return jsonify({'error': 'User not found'}), 404
+
+        email = user['email'].strip().lower()
+        certificates = list(Certificates.find({'email': email}))
+        print("Filtering certificates for email:", email)
+        print("Certificates found:", certificates)
+
+        cert_list = []
+        for cert in certificates:
+            cert_data = {
+                'id': str(cert['_id']),
+                'name': cert.get('name'),
+                'event': cert.get('event'),
+                'date': cert.get('date'),
+                'email': cert.get('email'),
+            }
+            cert_list.append(cert_data)
+
+        return jsonify({'certificates': cert_list}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500

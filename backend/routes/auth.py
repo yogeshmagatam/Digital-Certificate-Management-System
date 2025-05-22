@@ -14,7 +14,8 @@ def login():
     user = Users.find_one({'email': data['email']})
     if user and bcrypt.checkpw(data['password'].encode('utf-8'), user['password']):
         token = create_access_token(identity=str(user['_id']))
-        return jsonify({'token': token}), 200
+        role = user.get('role', 'student')  # Default to 'student' if role not set
+        return jsonify({'token': token, 'role': role}), 200
     return jsonify({'msg': 'Bad credentials'}), 401
 
 # Sample Payload:
