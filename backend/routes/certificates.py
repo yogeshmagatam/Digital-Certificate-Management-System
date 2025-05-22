@@ -1,18 +1,27 @@
 import datetime
 import os
+import hashlib
 from flask import Blueprint, request, jsonify, send_file
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from models import Certificates, AuditLogs, Users
 from utils.pdf_generator import generate_pdf
 from utils.ipfs_client import upload_file
 from utils.mock_blockchain  import anchor
+from utils.blockchain import anchor_certificate, is_certificate_anchored
 from bson import ObjectId
 import json
 import qrcode
 from io import BytesIO
-
+from web3 import Web3
+import copy
 
 cert_bp = Blueprint('certificates', __name__)
+
+def serialize_cert(cert):
+    cert = copy.deepcopy(cert)
+    cert['id'] = str(cert['_id'])
+    del cert['_id']
+    return cert
 
 @cert_bp.route('/generate-certificates', methods=['POST'])
 @jwt_required()
@@ -20,6 +29,13 @@ def generate_certificates():
     # handle bulk or single
     data = request.get_json()
     cert_id = Certificates.insert_one(data).inserted_id
+    # Hash certificate data (e.g., using SHA256)
+    # cert_hash = hashlib.sha256(json.dumps(data, sort_keys=True).encode()).hexdigest()
+    # # Anchor on blockchain
+    # tx_hash = anchor_certificate(Web3.to_bytes(hexstr=cert_hash), os.getenv('ETH_PRIVATE_KEY'))
+    # # Save tx_hash in DB if needed
+    # Certificates.update_one({'_id': cert_id}, {'$set': {'blockchain_tx': tx_hash}})
+
     pdf_dir = os.path.join(os.getcwd(), "tmp")
     os.makedirs(pdf_dir, exist_ok=True)
     pdf_path = os.path.join(pdf_dir, f"{cert_id}.pdf")
@@ -58,12 +74,14 @@ def verify(cert_id):
         return jsonify({'valid': False, 'error': 'Invalid certificate ID'}), 400
     if not cert:
         return jsonify({'valid': False}), 404
-    # optionally verify chain data
+    cert_hash = hashlib.sha256(json.dumps(cert, sort_keys=True).encode()).hexdigest()
+    anchored = is_certificate_anchored(Web3.to_bytes(hexstr=cert_hash))
     return jsonify({
         'studentName': cert.get('name'),
         'issueDate': cert.get('date'),
         'course': cert.get('course'),
-        'valid': True
+        'anchored': anchored,
+        'valid': anchored
     }), 200
 
 @cert_bp.route('/generate-certificate', methods=['POST'])
