@@ -28,6 +28,20 @@ def serialize_cert(cert):
 def generate_certificates():
     # handle bulk or single
     data = request.get_json()
+    
+    # Check for duplicate certificate
+    existing_cert = Certificates.find_one({
+        'name': data.get('name'),
+        'course': data.get('course'),
+        'date': data.get('date')
+    })
+    
+    if existing_cert:
+        return jsonify({
+            'error': 'Certificate already exists',
+            'id': str(existing_cert['_id'])
+        }), 409
+
     cert_id = Certificates.insert_one(data).inserted_id
     # Hash certificate data (e.g., using SHA256)
     # cert_hash = hashlib.sha256(json.dumps(data, sort_keys=True).encode()).hexdigest()
@@ -89,13 +103,27 @@ def verify(cert_id):
 def generate_event_certificate():
     data = request.get_json()
     student_id = get_jwt_identity()  # Get the logged-in user's ID
+    
+    # Check for duplicate certificate
+    existing_cert = Certificates.find_one({
+        'name': data.get('name'),
+        'event': data.get('event'),
+        'date': data.get('date'),
+        'email': data.get('email')
+    })
+    
+    if existing_cert:
+        return jsonify({
+            'error': 'Certificate already exists for this event',
+            'id': str(existing_cert['_id'])
+        }), 409
+        
     cert_data = {
         'name': data.get('name'),
         'event': data.get('event'),
         'date': data.get('date'),
         'email': data.get('email'),
-        'student_id': student_id,  # <-- Add this line
-        # Add other fields as needed
+        'student_id': student_id,
     }
     cert_id = Certificates.insert_one(cert_data).inserted_id
     pdf_dir = os.path.join(os.getcwd(), "tmp")
