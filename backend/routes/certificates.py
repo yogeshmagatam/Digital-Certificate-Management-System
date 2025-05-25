@@ -77,7 +77,8 @@ def generate_certificates():
     # ipfs_hash = upload_file(pdf_path)
     # tx_hash = anchor(ipfs_hash, os.getenv('ETH_ACCOUNT'), os.getenv('ETH_KEY'))
     # Certificates.update_one({'_id': cert_id}, {'$set': {'ipfs': ipfs_hash, 'tx': tx_hash}})
-    AuditLogs.insert_one({'user': get_jwt_identity(), 'action': 'generate', 'details': str(cert_id)})
+    name = data.get('email').split('@')[0]
+    AuditLogs.insert_one({'name': name, 'event': data.get('event'), 'action': 'generate', 'details': str(cert_id), 'user': get_jwt_identity(), 'CreatedBy_': get_jwt_identity(), 'CreatedDate_': datetime.datetime.now()})
     return jsonify({'id': str(cert_id)}), 200
 
 @cert_bp.route('/verify/<cert_id>', methods=['GET'])

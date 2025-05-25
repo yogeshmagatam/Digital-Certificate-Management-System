@@ -16,4 +16,5 @@ def audit_logs():
         user_id = l.get('user')
         user = Users.find_one({'_id': ObjectId(user_id)}) if user_id else None
         l['user'] = user.get('email') if user and user.get('email') else str(user_id)
+        l['CreatedBy_'] = user.get('email') if user and user.get('email') else str(user_id)
     return jsonify(logs), 200
