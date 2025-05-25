@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Config:
-    MONGO_URI = os.getenv('MONGO_URI', 'mongodb+srv://yogesh:yogesh@cluster0.hzj56.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+    MONGO_URI = os.getenv('MONGO_URI', "mongodb+srv://yogesh:yogesh@cluster1164.i3fgqek.mongodb.net/?retryWrites=true&w=majority&appName=Cluster1164")
     JWT_SECRET = os.getenv('JWT_SECRET')
     IPFS_API_URL = os.getenv('IPFS_API_URL')
     BLOCKCHAIN_PROVIDER = os.getenv('BLOCKCHAIN_PROVIDER')

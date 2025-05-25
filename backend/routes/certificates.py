@@ -179,3 +179,59 @@ def get_student_certificates():
         return jsonify({'certificates': cert_list}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+@cert_bp.route('/download/<cert_id>', methods=['GET'])
+@jwt_required()
+def download_certificate(cert_id):
+    try:
+        # Check if certificate exists
+        cert = Certificates.find_one({'_id': ObjectId(cert_id)})
+        if not cert:
+            return jsonify({'error': 'Certificate not found'}), 404
+            
+        # Check if user has access to this certificate
+        user_id = get_jwt_identity()
+        user = Users.find_one({'_id': ObjectId(user_id)})
+        if not user or (user.get('role') != 'admin' and user['email'].lower() != cert.get('email', '').lower()):
+            return jsonify({'error': 'Unauthorized access'}), 403
+
+        # Get the PDF path
+        pdf_dir = os.path.join(os.getcwd(), "tmp")
+        pdf_path = os.path.join(pdf_dir, f"{cert_id}.pdf")
+        
+        if not os.path.exists(pdf_path):
+            # Regenerate PDF if it doesn't exist
+            os.makedirs(pdf_dir, exist_ok=True)
+            
+            # Generate QR code
+            qr_data = cert.copy()
+            qr_data['id'] = str(cert['_id'])
+            if '_id' in qr_data:
+                del qr_data['_id']
+            
+            qr_content = json.dumps(qr_data)
+            qr = qrcode.make(qr_content)
+            qr_bytes = BytesIO()
+            qr.save(qr_bytes, format='PNG')
+            qr_bytes.seek(0)
+            qr_bytes.name = 'qrcode.png'
+            
+            generate_pdf(cert, pdf_path, qr_bytes)
+
+        # Log the download
+        AuditLogs.insert_one({
+            'user': get_jwt_identity(),
+            'action': 'download',
+            'details': str(cert_id),
+            'timestamp': datetime.datetime.now()
+        })
+        
+        return send_file(
+            pdf_path,
+            mimetype='application/pdf',
+            as_attachment=True,
+            download_name=f"certificate_{cert.get('name')}_{cert.get('event')}.pdf"
+        )
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500

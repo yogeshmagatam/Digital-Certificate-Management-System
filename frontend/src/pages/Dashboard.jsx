@@ -18,7 +18,9 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-container" style={{ position: "relative" }}>
-      <h2 className="dashboard-title">Admin Dashboard</h2>
+      <h2 className="dashboard-title">
+        {role === "admin" ? "Admin Dashboard" : "Student Dashboard"}
+      </h2>
       <ul className="dashboard-list">
         {role === "admin" ? (
           <>
@@ -34,11 +36,13 @@ const Dashboard = () => {
             </li>
           </>
         ) : role === "student" ? (
-          <li>
-            <Link to="/student-info" className="dashboard-link">
-              Student Information
-            </Link>
-          </li>
+          <>
+            <li>
+              <Link to="/student-info" className="dashboard-link">
+                Student Information
+              </Link>
+            </li>
+          </>
         ) : null}
       </ul>
       <LogoutButton />

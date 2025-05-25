@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "../Dashboard.css"; // Assuming we're using the same styles as the admin dashboard
 
 const StudentCertificates = () => {
   const [certificates, setCertificates] = useState([]);
@@ -26,22 +27,80 @@ const StudentCertificates = () => {
       });
   }, []);
 
-  if (loading) return <div>Loading certificates...</div>;
+  const handleDownload = async (certId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/certificates/download/${certId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      
+      if (!response.ok) {
+        throw new Error('Failed to download certificate');
+      }
+      
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `certificate.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error('Error downloading certificate:', error);
+      alert('Failed to download certificate. Please try again.');
+    }
+  };
+
+  if (loading) return (
+    <div className="dashboard-container">
+      <div className="loading">Loading certificates...</div>
+    </div>
+  );
 
   return (
-    <div>
-      <h2>Your Certificates</h2>
-      {certificates.length === 0 ? (
-        <p>No certificates found.</p>
-      ) : (
-        <ul>
-          {certificates.map((cert) => (
-            <li key={cert._id}>
-              {cert.name} - {cert.event} - {cert.date}
+    <div className="dashboard-container" style={{ position: "relative" }}>
+      <h2 className="dashboard-title">Student Dashboard</h2>
+      <ul className="dashboard-list">
+        {certificates.length === 0 ? (
+          <li className="no-certificates">No certificates found.</li>
+        ) : (
+          certificates.map((cert) => (
+            <li key={cert.id} className="dashboard-item">
+              <div className="certificate-details">
+                <h3>{cert.name}</h3>
+                <p>Event: {cert.event}</p>
+                <p>Date: {cert.date}</p>
+                <p>Email: {cert.email}</p>
+                <button
+                  onClick={() => handleDownload(cert.id)}
+                  className="download-button"
+                  style={{
+                    backgroundColor: '#4CAF50',
+                    color: 'white',
+                    padding: '8px 16px',
+                    border: 'none',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    marginTop: '10px',
+                    fontSize: '14px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px'
+                  }}
+                >
+                  <span>📥</span> Download Certificate
+                </button>
+              </div>
             </li>
-          ))}
-        </ul>
-      )}
+          ))
+        )}
+      </ul>
     </div>
   );
 };
