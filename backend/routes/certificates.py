@@ -29,6 +29,10 @@ def generate_certificates():
     # handle bulk or single
     data = request.get_json()
     
+    # Convert template_type to integer if present
+    if 'template_type' in data:
+        data['template_type'] = int(data['template_type'])
+    
     # Check for duplicate certificate
     existing_cert = Certificates.find_one({
         'name': data.get('name'),
@@ -73,7 +77,7 @@ def generate_certificates():
     except Exception as e:
         print("QR code generation error:", e)
     
-    generate_pdf(data, pdf_path, qr_bytes)
+    generate_pdf(data, pdf_path, qr_bytes, template_type=data.get('template_type', 1))
     # ipfs_hash = upload_file(pdf_path)
     # tx_hash = anchor(ipfs_hash, os.getenv('ETH_ACCOUNT'), os.getenv('ETH_KEY'))
     # Certificates.update_one({'_id': cert_id}, {'$set': {'ipfs': ipfs_hash, 'tx': tx_hash}})
@@ -110,7 +114,8 @@ def generate_event_certificate():
         'name': data.get('name'),
         'event': data.get('event'),
         'date': data.get('date'),
-        'email': data.get('email')
+        'email': data.get('email'),
+        'template_type': data.get('template_type', 1)  # Include template_type in uniqueness check
     })
     
     if existing_cert:
@@ -125,6 +130,7 @@ def generate_event_certificate():
         'date': data.get('date'),
         'email': data.get('email'),
         'student_id': student_id,
+        'template_type': data.get('template_type', 1),  # Add template type with default value
     }
     cert_id = Certificates.insert_one(cert_data).inserted_id
     pdf_dir = os.path.join(os.getcwd(), "tmp")
@@ -146,7 +152,7 @@ def generate_event_certificate():
     except Exception as e:
         print("QR code generation error:", e)
         
-    generate_pdf(cert_data, pdf_path, qr_bytes)
+    generate_pdf(cert_data, pdf_path, qr_bytes, template_type=data.get('template_type', 1))
     AuditLogs.insert_one({'name': f"{data.get('name')}_({data.get('name')})", 'event':  data.get('event'), 'details': str(cert_id), 'createdby_': get_jwt_identity(), 'createddate_': datetime.datetime.now()})
     return jsonify({'id': str(cert_id)}), 200
 
@@ -217,7 +223,7 @@ def download_certificate(cert_id):
             qr_bytes.seek(0)
             qr_bytes.name = 'qrcode.png'
             
-            generate_pdf(cert, pdf_path, qr_bytes)
+            generate_pdf(cert, pdf_path, qr_bytes, template_type=cert.get('template_type', 1))
 
         # Log the download
         AuditLogs.insert_one({

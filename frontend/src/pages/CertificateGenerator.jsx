@@ -8,11 +8,13 @@ const CertificateGenerator = () => {
     event: "",
     date: "",
     email: "",
+    template_type: 1,
   });
   const [success, setSuccess] = useState(false);
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const value = e.target.name === 'template_type' ? parseInt(e.target.value) : e.target.value;
+    setForm({ ...form, [e.target.name]: value });
   };
 
   const handleSubmit = async (e) => {
@@ -229,6 +231,25 @@ const CertificateGenerator = () => {
               boxShadow: "0 2px 8px rgba(102,126,234,0.06)",
             }}
           />
+          <select
+            name="template_type"
+            value={form.template_type}
+            onChange={handleChange}
+            required
+            style={{
+              padding: "12px 16px",
+              border: "1.5px solid #b4c5e4",
+              borderRadius: "8px",
+              fontSize: "1.05rem",
+              outline: "none",
+              transition: "border 0.2s, box-shadow 0.2s",
+              boxShadow: "0 2px 8px rgba(102,126,234,0.06)",
+              backgroundColor: "white",
+            }}
+          >
+            <option value={1}>Template 1 - Gold Border</option>
+            <option value={2}>Template 2 - Blue Border</option>
+          </select>
           <button
             type="submit"
             style={{
