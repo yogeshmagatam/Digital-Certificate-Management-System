@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "../Login.css"; // Import the CSS file
+import "../Login.css"; 
 
 const Login = () => {
   const navigate = useNavigate();
@@ -30,7 +30,7 @@ const Login = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/api/auth/register", {
+       await axios.post("http://localhost:5000/api/auth/register", {
         email,
         password,
         role: "student", // Always register as student

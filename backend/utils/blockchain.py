@@ -11,11 +11,6 @@ abi = '[{"inputs":[{"internalType":"string","name":"name","type":"string"},{"int
 
 contract = web3.eth.contract(address=address, abi=abi)
 
-# owner = contract.functions.ownerOf(5895).call()
-# print(owner)
-
-# contract = w3.eth.contract(address=CONTRACT_ADDRESS, abi=CONTRACT_ABI)  # Remove or comment out this line
-
 def anchor_certificate(cert_hash, private_key):
     acct = web3.eth.account.from_key(private_key)
     nonce = web3.eth.get_transaction_count(acct.address)

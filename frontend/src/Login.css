@@ -1,24 +1,22 @@
 .login-container {
   min-height: 100vh;
+  width: 100vw;
   display: flex;
-  align-items: center;
   justify-content: center;
-  /* background: linear-gradient(120deg, #f0f4f8 0%, #cfd9df 100%); */
-  animation: bg-move 10s ease-in-out infinite alternate;
-  background-size: 200% 200%;
-}
-
-@keyframes bg-move {
-  0% {
-    background-position: 0% 50%;
-  }
-  100% {
-    background-position: 100% 50%;
-  }
+  align-items: center;
+  background-image: url('./assets/200.webp');
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .login-card {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.35);
   backdrop-filter: blur(8px) saturate(180%);
   box-shadow: 0 8px 32px rgba(31, 38, 135, 0.18);
   border: 1.5px solid rgba(255, 255, 255, 0.25);
@@ -43,8 +41,6 @@
   z-index: 0;
   border-radius: 18px;
 }
-
-/* Card pop-in animation when toggling register/login */
 .login-card.registering {
   animation: pop-in 0.5s;
 }
@@ -80,7 +76,6 @@
   z-index: 1;
 }
 
-/* Fade in/out for form fields */
 .login-form .login-input,
 .login-form select,
 .login-form .login-button {
@@ -135,7 +130,6 @@
   box-shadow: 0 4px 16px rgba(31, 38, 135, 0.12);
 }
 
-/* Button press animation */
 .login-button:active {
   transform: scale(0.97);
   box-shadow: 0 1px 4px rgba(31, 38, 135, 0.1);
@@ -170,7 +164,8 @@
   justify-content: center;
   gap: 10px;
   border: none;
-  border-radius: 8px;
+  border-radius: 8px; 
+
   padding: 12px 0;
   font-size: 1rem;
   font-weight: 600;
@@ -186,7 +181,6 @@
 }
 
 .google-btn:hover {
-  /* Remove color/gradient change on hover, only add subtle shadow/scale */
   background: linear-gradient(90deg, #fff 0%, #f8fafc 100%);
   color: #4285f4;
   box-shadow: 0 4px 16px rgba(66, 133, 244, 0.12);
@@ -199,7 +193,6 @@
 }
 
 .github-btn:hover {
-  /* Remove color/gradient change on hover, only add subtle shadow/scale */
   background: linear-gradient(90deg, #24292e 0%, #444c56 100%);
   color: #fff;
   box-shadow: 0 4px 16px rgba(36, 41, 46, 0.12);

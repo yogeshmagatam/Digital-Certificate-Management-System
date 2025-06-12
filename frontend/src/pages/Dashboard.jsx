@@ -13,7 +13,6 @@ const Dashboard = () => {
     }
   }, [role, navigate]);
 
-  // Debug: See what role is being read
   console.log("Role from localStorage:", role);
 
   return (

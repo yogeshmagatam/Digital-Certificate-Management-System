@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "../AuditLogs.css"; // Import the CSS file
+import "../AuditLogs.css"; 
 
 const AuditLogs = () => {
   const [logs, setLogs] = useState([]);

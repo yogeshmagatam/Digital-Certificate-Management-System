@@ -1,5 +1,3 @@
-# utils/ipfs_client.py
-
 import requests
 from requests.auth import HTTPBasicAuth
 import os

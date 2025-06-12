@@ -1,12 +1,33 @@
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+}
+
 .dashboard-container {
   padding: 2rem;
-  background: linear-gradient(120deg, #e0e7ff 0%, #f1f5f9 100%);
+  background-image: url('./assets/200.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   animation: fadeIn 1s ease;
+  margin: 0;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 @keyframes fadeIn {
@@ -23,11 +44,15 @@
 .dashboard-title {
   font-size: 2.5rem;
   font-weight: bold;
-  color: #3730a3;
+  color: #ffffff;
   margin-bottom: 2rem;
   letter-spacing: 1px;
-  text-shadow: 0 2px 8px rgba(99, 102, 241, 0.08);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   animation: slideDown 0.8s;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  backdrop-filter: blur(8px);
 }
 
 @keyframes slideDown {
@@ -61,13 +86,22 @@
   }
 }
 
-.dashboard-list li {
+.dashboard-item {
   margin: 0;
   transition: transform 0.3s;
 }
 
-.dashboard-list li:hover {
+.dashboard-item:hover {
   transform: scale(1.05);
+}
+
+.certificate-details {
+  color: white;
+}
+
+.certificate-details h3,
+.certificate-details p {
+  color: white;
 }
 
 .dashboard-link {
@@ -104,7 +138,6 @@
   box-shadow: 0 8px 24px rgba(99, 102, 241, 0.18);
 }
 
-  /* Animated logout button styles */
 .logout-top-right {
   position: absolute;
   top: 24px;

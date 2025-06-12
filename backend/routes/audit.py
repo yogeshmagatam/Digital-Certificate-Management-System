@@ -11,8 +11,7 @@ def audit_logs():
     logs = list(AuditLogs.find().sort('timestamp', -1))
     for l in logs:
         l['id'] = str(l['_id'])
-        del l['_id']  # Remove the ObjectId field to avoid serialization error
-    # Lookup user info
+        del l['_id'] 
         user_id = l.get('user')
         user = Users.find_one({'_id': ObjectId(user_id)}) if user_id else None
         l['user'] = user.get('email') if user and user.get('email') else str(user_id)

@@ -26,14 +26,11 @@ def serialize_cert(cert):
 @cert_bp.route('/generate-certificates', methods=['POST'])
 @jwt_required()
 def generate_certificates():
-    # handle bulk or single
     data = request.get_json()
     
-    # Convert template_type to integer if present
     if 'template_type' in data:
         data['template_type'] = int(data['template_type'])
     
-    # Check for duplicate certificate
     existing_cert = Certificates.find_one({
         'name': data.get('name'),
         'course': data.get('course'),
@@ -47,25 +44,19 @@ def generate_certificates():
         }), 409
 
     cert_id = Certificates.insert_one(data).inserted_id
-    # Hash certificate data (e.g., using SHA256)
-    # cert_hash = hashlib.sha256(json.dumps(data, sort_keys=True).encode()).hexdigest()
-    # # Anchor on blockchain
-    # tx_hash = anchor_certificate(Web3.to_bytes(hexstr=cert_hash), os.getenv('ETH_PRIVATE_KEY'))
-    # # Save tx_hash in DB if needed
-    # Certificates.update_one({'_id': cert_id}, {'$set': {'blockchain_tx': tx_hash}})
-
+    
     pdf_dir = os.path.join(os.getcwd(), "tmp")
     os.makedirs(pdf_dir, exist_ok=True)
     pdf_path = os.path.join(pdf_dir, f"{cert_id}.pdf")
     
-    # Prepare data for QR (remove or convert ObjectId)
+    
     qr_data = data.copy()
-    qr_data['id'] = str(cert_id)  # Add id as string for QR
-    # Do not include raw ObjectId
+    qr_data['id'] = str(cert_id) 
+   
     if '_id' in qr_data:
         del qr_data['_id']
 
-    # Generate QR code with certificate data as JSON
+    
     qr_content = json.dumps(qr_data)
     qr = qrcode.make(qr_content)
     qr_bytes = BytesIO()
@@ -78,9 +69,7 @@ def generate_certificates():
         print("QR code generation error:", e)
     
     generate_pdf(data, pdf_path, qr_bytes, template_type=data.get('template_type', 1))
-    # ipfs_hash = upload_file(pdf_path)
-    # tx_hash = anchor(ipfs_hash, os.getenv('ETH_ACCOUNT'), os.getenv('ETH_KEY'))
-    # Certificates.update_one({'_id': cert_id}, {'$set': {'ipfs': ipfs_hash, 'tx': tx_hash}})
+    
     name = data.get('email').split('@')[0]
     AuditLogs.insert_one({'name': name, 'event': data.get('event'), 'action': 'generate', 'details': str(cert_id), 'user': get_jwt_identity(), 'CreatedBy_': get_jwt_identity(), 'CreatedDate_': datetime.datetime.now()})
     return jsonify({'id': str(cert_id)}), 200
@@ -107,15 +96,13 @@ def verify(cert_id):
 @jwt_required()
 def generate_event_certificate():
     data = request.get_json()
-    student_id = get_jwt_identity()  # Get the logged-in user's ID
-    
-    # Check for duplicate certificate
+    student_id = get_jwt_identity()  
     existing_cert = Certificates.find_one({
         'name': data.get('name'),
         'event': data.get('event'),
         'date': data.get('date'),
         'email': data.get('email'),
-        'template_type': data.get('template_type', 1)  # Include template_type in uniqueness check
+        'template_type': data.get('template_type', 1)
     })
     
     if existing_cert:
@@ -130,17 +117,12 @@ def generate_event_certificate():
         'date': data.get('date'),
         'email': data.get('email'),
         'student_id': student_id,
-        'template_type': data.get('template_type', 1),  # Add template type with default value
+        'template_type': data.get('template_type', 1), 
     }
     cert_id = Certificates.insert_one(cert_data).inserted_id
     pdf_dir = os.path.join(os.getcwd(), "tmp")
     os.makedirs(pdf_dir, exist_ok=True)
     pdf_path = os.path.join(pdf_dir, f"{cert_id}.pdf")
-    # ipfs_hash = upload_file(pdf_path)
-    # tx_hash = anchor(ipfs_hash, os.getenv('ETH_ACCOUNT'), os.getenv('ETH_KEY'))
-    # Certificates.update_one({'_id': cert_id}, {'$set': {'ipfs': ipfs_hash, 'tx': tx_hash}})
-
-    # Generate QR code with certificate data as JSON
     qr_content = json.dumps(cert_data)
     qr = qrcode.make(qr_content)
     qr_bytes = BytesIO()
@@ -191,26 +173,18 @@ def get_student_certificates():
 @jwt_required()
 def download_certificate(cert_id):
     try:
-        # Check if certificate exists
         cert = Certificates.find_one({'_id': ObjectId(cert_id)})
         if not cert:
             return jsonify({'error': 'Certificate not found'}), 404
-            
-        # Check if user has access to this certificate
         user_id = get_jwt_identity()
         user = Users.find_one({'_id': ObjectId(user_id)})
         if not user or (user.get('role') != 'admin' and user['email'].lower() != cert.get('email', '').lower()):
             return jsonify({'error': 'Unauthorized access'}), 403
-
-        # Get the PDF path
         pdf_dir = os.path.join(os.getcwd(), "tmp")
         pdf_path = os.path.join(pdf_dir, f"{cert_id}.pdf")
         
         if not os.path.exists(pdf_path):
-            # Regenerate PDF if it doesn't exist
             os.makedirs(pdf_dir, exist_ok=True)
-            
-            # Generate QR code
             qr_data = cert.copy()
             qr_data['id'] = str(cert['_id'])
             if '_id' in qr_data:
@@ -225,7 +199,6 @@ def download_certificate(cert_id):
             
             generate_pdf(cert, pdf_path, qr_bytes, template_type=cert.get('template_type', 1))
 
-        # Log the download
         AuditLogs.insert_one({
             'user': get_jwt_identity(),
             'action': 'download',

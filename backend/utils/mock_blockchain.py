@@ -1,9 +1,6 @@
-# utils/mock_blockchain.py
-
 import time
 import hashlib
 
-# Simulate an in-memory blockchain
 dummy_chain = []
 
 def anchor(data):

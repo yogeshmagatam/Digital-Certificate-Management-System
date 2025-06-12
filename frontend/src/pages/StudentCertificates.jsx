@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "../Dashboard.css"; // Assuming we're using the same styles as the admin dashboard
+import "../Dashboard.css"; 
 
 const StudentCertificates = () => {
   const [certificates, setCertificates] = useState([]);

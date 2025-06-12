@@ -16,12 +16,10 @@ def custom_unauthorized_response(callback):
 def custom_invalid_token_response(callback):
     return jsonify({'error': 'Invalid token'}), 401
 
-# Register Blueprints
 from routes.auth import auth_bp
 from routes.certificates import cert_bp
 from routes.audit import audit_bp
 
-# app.register_blueprint(auth_bp, url_prefix='/api')
 app.register_blueprint(cert_bp, url_prefix='/api/certificates')
 app.register_blueprint(audit_bp, url_prefix='/api/audit')
 app.register_blueprint(auth_bp, url_prefix='/api/auth')

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { QRCodeSVG } from "qrcode.react";
-import "../Verify.css"; // Import the CSS file
+import "../Verify.css"; 
 
 const Verify = () => {
   const { certificateId } = useParams();
