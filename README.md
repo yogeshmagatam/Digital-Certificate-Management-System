@@ -4,4 +4,4 @@ Install Dependencies
 
 Run App
 **Frontend**: `npm start`
-**Backend**: `python app.start`
+**Backend**: `python app.py`
