@@ -62,7 +62,7 @@
 
 .login-card h2 {
   margin-bottom: 1.5rem;
-  color: #2563eb;
+  color: #ffffff;
   font-weight: 700;
   letter-spacing: 1px;
   z-index: 1;
@@ -138,7 +138,7 @@
 .login-toggle {
   background: none;
   border: none;
-  color: #2563eb;
+  color: #f1f4fa;
   cursor: pointer;
   font-size: 1rem;
   margin-top: 1.2rem;
@@ -148,7 +148,7 @@
 }
 
 .login-toggle:hover {
-  color: #4f8cff;
+  color: #f2f4f7;
 }
 
 .oauth-buttons {

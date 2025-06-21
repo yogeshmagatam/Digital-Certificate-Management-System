@@ -8,6 +8,7 @@ def generate_pdf(data, output_path, qr_blob, template_type=1):
 
     base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
     logo_path = os.path.join(base_dir, "static", "images", "hmits_logo.png")
+    signature_path = os.path.join(base_dir, "static", "images", "signature.png")
 
     print(f"Attempting to load logo from: {logo_path}")
     print(f"Logo file exists: {os.path.exists(logo_path)}")
@@ -54,16 +55,6 @@ def generate_pdf(data, output_path, qr_blob, template_type=1):
         if email:
             pdf.cell(0, 10, f"Email: {email}", ln=True, align='C')
         
-        # Signature block
-        pdf.set_y(170)
-        pdf.set_font("Arial", '', 16)
-        pdf.set_text_color(44, 62, 80)
-        pdf.cell(0, 6, "__________________________", ln=True, align='R')
-        pdf.set_font("Arial", '', 14)
-        pdf.cell(0, 6, "Authorized Signature", ln=True, align='R')
-        pdf.set_font("Arial", 'I', 12)
-        pdf.cell(0, 6, "Organization Name", ln=True, align='R')
-
     elif template_type == 2:
         pdf.set_fill_color(245, 245, 245)  
         pdf.rect(0, 0, 297, 210, 'F')

@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "../Login.css"; 
-
+import "../Login.css";
 const Login = () => {
   const navigate = useNavigate();
   const [isRegister, setIsRegister] = useState(false);
