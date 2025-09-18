@@ -4,13 +4,16 @@ body {
   overflow: hidden;
   width: 100vw;
   height: 100vh;
+  background: #DDD0C8;
+  color: #323232;
 }
 
 .auditlogs-container {
   min-height: 100vh;
   width: 100vw;
   height: 100vh;
-  background-image: url('./assets/200.webp');
+  background: #DDD0C8;
+  color: #323232;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -38,9 +41,9 @@ body {
   font-size: 2rem;
   font-weight: bold;
   margin-bottom: 1.5rem;
-  color: #1f2937;
+  color: #323232;
   animation: slideDown 0.8s;
-  background: rgba(255, 255, 255, 0.7);
+  background: #DDD0C8;
   padding: 1rem 2rem;
   border-radius: 10px;
   backdrop-filter: blur(8px);
@@ -62,8 +65,8 @@ body {
 }
 
 .auditlogs-table-container {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(12px);
+  background: #fff;
+  color: #323232;
   border-radius: 10px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
   padding: 1.5rem;
@@ -100,6 +103,7 @@ body {
   padding: 1rem 1.5rem;
   border: 1px solid rgba(0, 0, 0, 0.1);
   text-align: left;
+  color: #323232;
 }
 
 .auditlogs-table th {
@@ -125,7 +129,7 @@ body {
 }
 
 .auditlogs-table td {
-  color: #1f2937;
+  color: #323232;
   font-size: 0.95rem;
   font-weight: 500;
 }

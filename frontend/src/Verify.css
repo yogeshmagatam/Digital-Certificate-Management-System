@@ -1,16 +1,16 @@
 body {
   margin: 0;
   padding: 0;
-  overflow: hidden;
   width: 100vw;
   height: 100vh;
+  box-sizing: border-box;
+  background: #DDD0C8;
+  color: #323232;
 }
 
 .verify-container {
   min-height: 100vh;
   width: 100vw;
-  height: 100vh;
-  background-image: url('./assets/200.webp');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -26,6 +26,9 @@ body {
   bottom: 0;
   box-sizing: border-box;
   overflow-y: auto;
+  /* Fallback for backdrop-filter */
+  background: #DDD0C8;
+  color: #323232;
 }
 
 @keyframes fadeInBg {
@@ -38,7 +41,10 @@ body {
 }
 
 .verify-card {
-  background: rgba(255, 255, 255, 0.7);
+  background: #fff;
+  color: #323232;
+  /* Fallback for backdrop-filter */
+  -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   border-radius: 16px;
@@ -66,14 +72,16 @@ body {
 
 .verify-title {
   font-size: 1.7rem;
+  
   font-weight: bold;
   margin-bottom: 0.5rem;
-  color: #1f2937;
+  color: #323232;
   letter-spacing: 1px;
   animation: fadeIn 1s;
-  background: rgba(255, 255, 255, 0.7);
+  background: #DDD0C8;
   padding: 1rem 2rem;
   border-radius: 10px;
+  -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   text-shadow: 0 2px 8px rgba(255, 255, 255, 0.5);
 }

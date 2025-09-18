@@ -1,35 +1,46 @@
+body {
+  background: #DDD0C8;
+  color: #323232;
+}
+
 .login-container {
   min-height: 100vh;
-  width: 100vw;
+  min-width: 100vw;
   display: flex;
-  justify-content: center;
   align-items: center;
-  background-image: url('./assets/200.webp');
-  background-size: 100% 100%;
-  background-position: center;
-  background-repeat: no-repeat;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  justify-content: center;
+  background: #DDD0C8;
+  animation: login-fade-in 1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+@keyframes login-fade-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.03);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .login-card {
-  background: rgba(255, 255, 255, 0.35);
-  backdrop-filter: blur(8px) saturate(180%);
-  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.18);
-  border: 1.5px solid rgba(255, 255, 255, 0.25);
-  padding: 2.5rem 2rem;
+  width: 420px;
+  height: 420px;
+  background: #fff;
+  color: #323232;
   border-radius: 18px;
-  width: 370px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: box-shadow 0.3s, transform 0.4s;
-  will-change: transform;
+  justify-content: center;
   position: relative;
-  overflow: hidden;
+  padding: 2.5rem;
 }
 
 .login-card::before {
@@ -40,6 +51,7 @@
   opacity: 0.15;
   z-index: 0;
   border-radius: 18px;
+  pointer-events: none;
 }
 .login-card.registering {
   animation: pop-in 0.5s;
@@ -62,7 +74,8 @@
 
 .login-card h2 {
   margin-bottom: 1.5rem;
-  color: #ffffff;
+  color: #323232;
+  background: #DDD0C8;
   font-weight: 700;
   letter-spacing: 1px;
   z-index: 1;
@@ -113,8 +126,8 @@
 
 .login-button {
   padding: 0.85rem 1.1rem;
-  background: linear-gradient(90deg, #4f8cff 0%, #2563eb 100%);
-  color: #fff;
+  background: #323232;
+  color: #DDD0C8;
   border: none;
   border-radius: 8px;
   font-size: 1.05rem;
@@ -125,7 +138,9 @@
 }
 
 .login-button:hover {
-  background: linear-gradient(90deg, #2563eb 0%, #4f8cff 100%);
+  background: #DDD0C8;
+  color: #323232;
+  border: 1px solid #323232;
   transform: translateY(-2px) scale(1.03);
   box-shadow: 0 4px 16px rgba(31, 38, 135, 0.12);
 }
@@ -138,17 +153,19 @@
 .login-toggle {
   background: none;
   border: none;
-  color: #f1f4fa;
+  color: #323232; /* Constant dark grey */
   cursor: pointer;
   font-size: 1rem;
   margin-top: 1.2rem;
   text-decoration: underline;
-  transition: color 0.2s;
+  transition: none;
   z-index: 1;
 }
 
-.login-toggle:hover {
-  color: #f2f4f7;
+.login-toggle:hover,
+.login-toggle:active,
+.login-toggle:focus {
+  color: #323232; /* Keep color constant on all states */
 }
 
 .oauth-buttons {
@@ -188,13 +205,14 @@
 }
 
 .github-btn {
-  background: linear-gradient(90deg, #24292e 0%, #444c56 100%);
-  color: #fff;
+  background: #323232;
+  color: #DDD0C8;
 }
 
 .github-btn:hover {
-  background: linear-gradient(90deg, #24292e 0%, #444c56 100%);
-  color: #fff;
+  background: #DDD0C8;
+  color: #323232;
+  border: 1px solid #323232;
   box-shadow: 0 4px 16px rgba(36, 41, 46, 0.12);
   transform: translateY(-2px) scale(1.03);
 }

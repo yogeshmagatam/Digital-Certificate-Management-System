@@ -4,11 +4,12 @@ body {
   overflow: hidden;
   width: 100vw;
   height: 100vh;
+  background: #DDD0C8;
+  color: #323232;
 }
 
 .dashboard-container {
   padding: 2rem;
-  background-image: url('./assets/200.webp');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -28,6 +29,8 @@ body {
   margin: 0;
   overflow: hidden;
   box-sizing: border-box;
+  background: #DDD0C8;
+  color: #323232;
 }
 
 @keyframes fadeIn {
@@ -44,12 +47,12 @@ body {
 .dashboard-title {
   font-size: 2.5rem;
   font-weight: bold;
-  color: #ffffff;
+  color: #323232;
   margin-bottom: 2rem;
   letter-spacing: 1px;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   animation: slideDown 0.8s;
-  background: rgba(0, 0, 0, 0.4);
+  background: #DDD0C8;
   padding: 1rem 2rem;
   border-radius: 10px;
   backdrop-filter: blur(8px);
@@ -96,19 +99,19 @@ body {
 }
 
 .certificate-details {
-  color: white;
+  color: #323232;
 }
 
 .certificate-details h3,
 .certificate-details p {
-  color: white;
+  color: #323232;
 }
 
 .dashboard-link {
   display: inline-block;
   padding: 1.2rem 2.5rem;
-  background: linear-gradient(90deg, #6366f1 0%, #2563eb 100%);
-  color: #fff;
+  background: #323232;
+  color: #DDD0C8;
   border-radius: 10px;
   font-size: 1.2rem;
   font-weight: 600;
@@ -133,7 +136,9 @@ body {
 }
 
 .dashboard-link:hover {
-  background: linear-gradient(90deg, #2563eb 0%, #6366f1 100%);
+  background: #DDD0C8;
+  color: #323232;
+  border: 1px solid #323232;
   transform: translateY(-4px) scale(1.08) rotate(-2deg);
   box-shadow: 0 8px 24px rgba(99, 102, 241, 0.18);
 }
